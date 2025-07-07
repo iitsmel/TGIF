@@ -4,31 +4,33 @@
 integer = 1
 floating = 0.1
 complex_num = 3 + 4j
-string = "A"
+string = "Hello World!"
+character = 'c'
+unicode_character = chr(65)
+ordinal = ord('A')
 boolean = True
-bytes_obj = b"byte"
+bytes_object = b"byte"
 byte_array = bytearray(b"bytearray")
-list_obj = [1, 2, 3]
-tuple_obj = (4, 5, 6)
-set_obj = {7, 8, 9}
-frozenset_obj = frozenset({10, 11, 12})
-dict_obj = {'key': 'value'}
-char = 'A'
-ordinal = 65
+list_object = [1, 2, 3]
+tuple_object = (4, 5, 6)
+set_object = {7, 8, 9}
+frozenset_object = frozenset({10, 11, 12})
+dictionary_object = {'key': 'value'}
 memory_view = memoryview(b"memory")
 
-print(f"int       : {integer}")
-print(f"float     : {floating}")
-print(f"complex   : {complex_num}")
-print(f"str       : {string}")
-print(f"bool      : {boolean}")
-print(f"bytes     : {bytes_obj}")
-print(f"bytearray : {byte_array}")
-print(f"list      : {list_obj}")
-print(f"tuple     : {tuple_obj}")
-print(f"set       : {sorted(set_obj)}")
-print(f"frozenset : {sorted(frozenset_obj)}")
-print(f"dict      : {dict_obj}")
-print(f"str       : {char}")
-print(f"int       : {ordinal}")
-print(f"memoryview: {memory_view}")
+print(f"int        : {integer}")
+print(f"float      : {floating}")
+print(f"complex    : {complex_num}")
+print(f"str        : {string}")
+print(f"char       : {character}")
+print(f"char (chr) : {unicode_character}")
+print(f"int  (ord) : {ordinal}")
+print(f"bool       : {boolean}")
+print(f"bytes      : {bytes_object}")
+print(f"bytearray  : {byte_array}")
+print(f"list       : {list_object}")
+print(f"tuple      : {tuple_object}")
+print(f"set        : {sorted(set_object)}")
+print(f"frozenset  : {sorted(frozenset_object)}")
+print(f"dict       : {dictionary_object}")
+print(f"memoryview : {memory_view}")
