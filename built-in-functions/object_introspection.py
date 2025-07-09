@@ -2,23 +2,23 @@
 # -*- encoding: utf-8 -*-
 
 sample_list = [1, 2, 3]
-sample_str = "abc"
-sample_int = 42
-sample_dict = {"x": 1}
+sample_string = "abc"
+sample_integer = 42
+sample_dictionary = {"x": 1}
 sample_set = {1, 2, 3}
 
 type_list = type(sample_list).__name__
-type_str = type(sample_str).__name__
-type_int = type(sample_int).__name__
-id_str = id(sample_str)
-dir_str = dir(sample_str)  # list of attributes/methods
-repr_int = repr(sample_int)
-str_int = str(sample_int)
+type_string = type(sample_string).__name__
+type_int = type(sample_integer).__name__
+identifier_string = id(sample_string)
+dictionary_string = dir(sample_string)  # list of attributes/methods
+string_int = str(sample_integer)
+representation_int = repr(sample_integer)
 
 print(f"type (list)           : {type_list}")
-print(f"type (str)            : {type_str}")
+print(f"type (str)            : {type_string}")
 print(f"type (int)            : {type_int}")
-print(f"id (str)              : {id_str}")
-print(f"dir (str, first 7)    : {dir_str[:7]} ...")
-print(f"repr (int)            : {repr_int}")
-print(f"str (int)             : {str_int}")
+print(f"id   (str)            : {identifier_string}")
+print(f"dir  (str, first 7)   : {dictionary_string[:7]} and more")
+print(f"str  (int)            : {string_int}")
+print(f"representation (int)  : {representation_int}")
