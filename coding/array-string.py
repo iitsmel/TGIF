@@ -12,19 +12,19 @@ def checkInteger(nums1, m, nums2, n):
     for value in total:
         turn_string = str(value)
         if not turn_string.lstrip('-+').isdigit():
-            return False
+            return f"custom error: {value} is not a digit"
         if value >= maximum or minimum >= value:
-            return False
+            return f"custom error: {value} is out of range"
     return True
 
 # https://leetcode.com/problems/merge-sorted-array/description/
 # Merge Sorted Array, easy
 class MergeSortedArray:
     def merge(self, nums1, m, nums2, n):
-        if not checkInteger(nums1, m, nums2, n):
-            return False
-        
-        nums1[:m+n] = sorted(nums1[:m] + nums2[:n])
+        checking = checkInteger(nums1, m, nums2, n)
+        if checking is not True:
+            print(checking)
+            return
         return sorted(nums1[:m] + nums2[:n])
 
 msa_ds = MergeSortedArray()
@@ -100,9 +100,9 @@ def get_msa(_):
 
     for eCases in edges:
         try:
-            print(msa_ds.merge(*eCases))
-        except Exception:
-            print("Error:", eCases)
+            msa_ds.merge(*eCases)
+        except Exception as error_message:
+            print(type(error_message).__name__.replace("Error", " error").lower(), " :",eCases)
 
 get_msa(None)
 
@@ -113,5 +113,3 @@ if input("Next: Remove Duplicates from Sorted Array \ncontinue: ").strip().lower
     exit()
 
 print()
-
-
