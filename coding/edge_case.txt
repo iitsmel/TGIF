@@ -1,0 +1,46 @@
+# TypeError: wrong type
+([-1.1, -2.2, -3.3], 1, [2], 2), # float in list
+(['hello', -2.2, -3.3], 1, [2], 2), # string/float in list
+([{1: 'hello'}], 1, [2], 2), # dict in list
+(1, 1, [2], 2), # int not list
+(1, 1, [[2]], 2), # int not list, nested list
+([{1: 'hello'}], [{1: 'hello'}], [{1: 'hello'}], [{1: 'hello'}]), # dict in list, all wrong type
+([2], [2], [2], [2], [2]), # too many arguments
+([0, 0, 0], 'print(msa_ds.merge([2,4,6,0,0,0], 3, [1,3,5], 3))', [2], 2), # string not int
+(), # empty tuple
+(12, 1), # tuple not list
+{'a': 1, 'b': 2}, # dict not list
+frozenset({1, 2, 3}), # frozenset not list
+"hello", # string not list
+b"hello", # byte not list
+bytearray(b"hello"), # bytearray not list
+range(3), # range not list
+[1e9, 1e9, 1e9, 1e9, 1e9, 1e9, 1e9, 1e9, 1e9], # float values
+["hello"], # string to int
+[{"1": "hello"}], # dict in list
+[(1, 2, 3), 1], # tuple and int in list
+[[1], 2, [{3: 3}]], # nested list, int, dict in list
+
+# TypeError: missing argument
+(1, [2], 2), # missing one argument
+(), # missing all arguments
+[], # empty list
+
+# ValueError: out of range
+([1000000000, 0], 1, [-1000000000], 1), # too big
+([2000000000, 4, 6, 0, 0, 0], 3, [1, 3, 5], 3), # too big
+([-2000000000, 4, 6, 0, 0, 0], 3, [1, 3, 5], 3), # too small
+[1000000000, 1000000000, 1000000000, 99999999], # too big
+[-1000000000, 99999, -9999999], # too small
+
+"""
+# Python evaluates test cases before function call, pass arguments as strings to solve the errors 
+# ValueError/OverflowError: impossible to calculate
+([0, 0, 0], 1, [2], 10 ** (-10 ** 10)), # impossible negative integer
+([0, 10 ** (-10 ** 10), 0], 1, [2], 1), # impossible negative integer in list
+([0, 0, 0], 1, [10 ** (10 ** 10)], 4), # impossible integer in list
+[i % 9 for i in range(10000000000000000000)], # too large calculation
+
+# SyntaxError: invalid syntax
+({-1.1: -2.2, -'hello': -3.3}, 1, [2], 2) # invalid dict key
+"""
