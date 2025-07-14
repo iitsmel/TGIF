@@ -5,9 +5,7 @@
 (1, 1, [2], 2), # int not list
 (1, 1, [[2]], 2), # int not list, nested list
 ([{1: 'hello'}], [{1: 'hello'}], [{1: 'hello'}], [{1: 'hello'}]), # dict in list, all wrong type
-([2], [2], [2], [2], [2]), # too many arguments
 ([0, 0, 0], 'print(msa_ds.merge([2,4,6,0,0,0], 3, [1,3,5], 3))', [2], 2), # string not int
-(), # empty tuple
 (12, 1), # tuple not list
 {'a': 1, 'b': 2}, # dict not list
 frozenset({1, 2, 3}), # frozenset not list
@@ -15,32 +13,312 @@ frozenset({1, 2, 3}), # frozenset not list
 b"hello", # byte not list
 bytearray(b"hello"), # bytearray not list
 range(3), # range not list
-[1e9, 1e9, 1e9, 1e9, 1e9, 1e9, 1e9, 1e9, 1e9], # float values
 ["hello"], # string to int
 [{"1": "hello"}], # dict in list
 [(1, 2, 3), 1], # tuple and int in list
 [[1], 2, [{3: 3}]], # nested list, int, dict in list
-
-# TypeError: missing argument
+([2], [2], [2], [2], [2]), # too many arguments
 (1, [2], 2), # missing one argument
-(), # missing all arguments
+(), # missing all arguments/empty tuple
 [], # empty list
 
-# ValueError: out of range
-([1000000000, 0], 1, [-1000000000], 1), # too big
-([2000000000, 4, 6, 0, 0, 0], 3, [1, 3, 5], 3), # too big
-([-2000000000, 4, 6, 0, 0, 0], 3, [1, 3, 5], 3), # too small
-[1000000000, 1000000000, 1000000000, 99999999], # too big
-[-1000000000, 99999, -9999999], # too small
+# MemoryError: memory limit
+([threading.active_count(), threading.current_thread().ident % 1000, 0], 2, [threading.main_thread().ident % 1000], 1), # GIL behavior differences
+([resource.getrlimit(resource.RLIMIT_NOFILE)[0] % 10000 if hasattr(resource, 'RLIMIT_NOFILE') else 1024, 0], 1, [resource.getrlimit(resource.RLIMIT_NPROC)[0] % 10000 if hasattr(resource, 'RLIMIT_NPROC') else 1024], 1), # process limits and resources
+([threading.get_ident() % 10000, threading.current_thread().ident % 10000, 0], 2, [threading.main_thread().ident % 10000], 1), # thread identifier variations
+([threading.active_count(), len(threading.enumerate()), 0], 2, [threading.main_thread().is_alive()], 1), # thread count variations
+([id(threading.Lock()), id(threading.RLock()), 0], 2, [id(threading.Condition())], 1), # lock object variations
+([id(threading.Semaphore()), id(threading.Event()), 0], 2, [id(threading.Barrier(1))], 1), # synchronization object variations
+([threading.current_thread().ident & 0xFFFF, os.getpid() & 0xFFFF, 0], 2, [time.time_ns() & 0xFFFF], 1), # atomic operation simulation
+([multiprocessing.current_process().pid % 10000, multiprocessing.parent_process().pid % 10000 if multiprocessing.parent_process() else 0, 0], 2, [1], 1), # process ID variations
+([threading.get_ident() % 1000, 0], 1, [threading.current_thread().ident % 1000], 1), # thread scheduling variations
+([id(threading.Lock()), id(threading.RLock()), 0], 2, [id(threading.Semaphore())], 1), # lock state variations
+([id([]), id([]), 0], 2, [id([])], 1), # fresh object IDs
+([id({}), id(set()), 0], 2, [id(tuple())], 1), # different object types
+([sys.getsizeof(1), sys.getsizeof(2), 0], 2, [sys.getsizeof(3)], 1), # memory layout effects
+([sys.getrefcount(1), sys.getrefcount(2), 0], 2, [sys.getrefcount(3)], 1), # reference counting
+([sys.getsizeof([1, 2, 3]), sys.getsizeof({'a': 1, 'b': 2}), 0], 2, [sys.getsizeof({1, 2, 3})], 1), # object size variations
+([gc.get_stats()[0]['collections'], gc.get_stats()[1]['collections'], 0], 2, [gc.get_stats()[2]['collections']], 1), # garbage collection statistics
+([gc.get_stats()[0]['collected'], gc.get_stats()[1]['collected'], 0], 2, [gc.get_stats()[2]['collected']], 1), # garbage collection collected count
+([gc.get_count()[0], gc.get_count()[1], 0], 2, [gc.get_count()[2]], 1), # garbage collection implementation
+
+# SystemError: system error
+([struct.calcsize("P"), struct.calcsize("L"), 0], 2, [struct.calcsize("Q")], 1), # word size differences
+([sys.byteorder == "little", sys.byteorder == "big", 0], 2, [1], 1), # endianness
+([platform.machine() == "x86_64", platform.machine() == "i386", 0], 2, [platform.machine() == "arm64"], 1), # architecture specific constants
+
+# RuntimeError: runtime error
+([1 + 1, 2 * 2, 0], 2, [3 + 3], 1), # compile time constants
+([len("hello"), len("world"), 0], 2, [len("python")], 1), # string constants
+([bool(1), bool(0), 0], 2, [bool(-1)], 1), # boolean constants
+([132 if True else 0, 123 if False else 43, 0], 2, [213 if True else 0], 1), # dead code elimination effects
+([0 or 1, 1 and 2, 0], 2, [0 and 1], 1), # short circuit evaluation
+([sum(range(10)), sum(range(20)), 0], 2, [sum(range(30))], 1), # loop optimization effects
+([len(list(range(100))), len(list(range(200))), 0], 2, [len(list(range(300)))], 1), # range list optimization
+([hash("test1") & 0xFFFFFF, hash("test2") & 0xFFFFFF, 0], 2, [hash("test3") & 0xFFFFFF], 1), # hash randomization
+([hash(42) & 0xFFFFFF, hash(3.14) & 0xFFFFFF, 0], 2, [hash("mixed") & 0xFFFFFF], 1), # mixed type hashing
+([sys.flags.optimize, sys.flags.debug, sys.flags.verbose, 0, 0, 0], 3, [sys.flags.dont_write_bytecode, sys.flags.no_site, sys.flags.isolated], 3), # compiler flags
+([id("a"), id("b"), 0], 2, [id("c")], 1), # string interning
+([id("" + "abc"), id("abc"), 0], 2, [id("def")], 1), # string concatenation interning
+([__debug__, 1 if __debug__ else 0, 0], 2, [sys.flags.optimize], 1), # debug flag
+([len(__doc__ or ""), 0], 1, [len(str.__doc__ or "")], 1), # docstring removal
+([compile("1+1", "<string>", "eval").co_code[0], 0], 1, [compile("2+2", "<string>", "eval").co_code[0]], 1), # code object differences
+([sys.implementation.name == "cpython", sys.implementation.name == "pypy", 0], 2, [sys.implementation.name == "jython"], 1), # CPython vs PyPy vs Jython
+([sys.implementation.version.major, sys.implementation.version.minor, 0], 2, [sys.implementation.version.micro], 1), # implementation version
+([sys.float_info.mant_dig, sys.float_info.dig, 0], 2, [sys.float_info.radix], 1), # float precision differences
+([sys.hash_info.width, sys.hash_info.modulus, 0], 2, [sys.hash_info.inf], 1), # hash algorithm differences
+([issubclass(ValueError, Exception), issubclass(TypeError, Exception), 0], 2, [issubclass(RuntimeError, Exception)], 1), # exception hierarchy variations
+([ValueError.__module__ == 'builtins', TypeError.__module__ == 'builtins', 0], 2, [RuntimeError.__module__ == 'builtins'], 1), # exception module variations
+([sys.exc_info()[0] is None, sys.exc_info()[1] is None, 0], 2, [sys.exc_info()[2] is None], 1), # stack trace variations
+([len(traceback.format_stack()), sys.getrecursionlimit(), 0], 2, [len(inspect.stack())], 1), # stack inspection variations
+([sys.last_traceback is None, hasattr(sys, 'last_value'), 0], 2, [hasattr(sys, 'last_type')], 1), # exception state variations
+([len(sys.path), len(sys.modules), 0], 2, [len(sys.builtin_module_names)], 1), # Python path differences
+([len(sys.prefix), len(sys.exec_prefix), 0], 2, [len(sys.base_prefix)], 1), # installation path differences
+([sys.maxunicode, sys.maxunicode - 1, 0], 2, [0x10FFFF], 1), # unicode limits
+
+# OSError: operating system error
+([int(time.time() * 1000) % 1000, int(time.perf_counter() * 1000) % 1000, 0], 2, [int(time.process_time() * 1000) % 1000], 1), # timer precision differences
+([time.timezone if hasattr(time, 'timezone') else 0, 0], 1, [time.altzone if hasattr(time, 'altzone') else 0], 1), # timezone effects
+([time.daylight if hasattr(time, 'daylight') else 0, 0], 1, [1], 1), # daylight saving time
+([time.get_clock_info('monotonic').resolution > 0, time.get_clock_info('perf_counter').resolution > 0, 0], 2, [time.get_clock_info('process_time').resolution > 0], 1), # timer precision variations
+([int(time.time_ns() % 1000000), int(time.perf_counter_ns() % 1000000), 0], 2, [int(time.process_time_ns() % 1000000)], 1), # nanosecond timer variations
+([tracemalloc.get_traced_memory()[0] if tracemalloc.is_tracing() else 0, 0], 1, [tracemalloc.get_traced_memory()[1] if tracemalloc.is_tracing() else 0], 1), # memory profiling variations
+([socket.AF_INET, socket.AF_INET6, 0], 2, [socket.AF_UNIX if hasattr(socket, 'AF_UNIX') else 1], 1), # socket family variations
+([socket.SOCK_STREAM, socket.SOCK_DGRAM, 0], 2, [socket.SOCK_RAW if hasattr(socket, 'SOCK_RAW') else 3], 1), # socket types
+([socket.htonl(0x12345678) & 0xFFFF, socket.htons(0x1234), 0], 2, [socket.ntohl(0x78563412) & 0xFFFF], 1), # network byte order
+([len(os.environ.get('USERPROFILE', '')), len(os.environ.get('APPDATA', '')), 0], 2, [len(os.environ.get('TEMP', ''))], 1), # windows environment variables
+([len(os.environ.get('HOME', '')), len(os.environ.get('USER', '')), 0], 2, [len(os.environ.get('SHELL', ''))], 1), # unix environment variables
+([len(os.environ.get('TMPDIR', '')), len(os.environ.get('HOME', '')), 0], 2, [len(os.environ.get('USER', ''))], 1), # macOS environment variables
+([len(os.environ.get('LANG', '')), len(os.environ.get('LC_ALL', '')), 0], 2, [len(os.environ.get('LC_CTYPE', ''))], 1), # language and locale environment
+([os.path.getsize(__file__) % 10000, os.path.getmtime(__file__) % 10000, 0], 2, [os.path.getctime(__file__) % 10000], 1), # file system persistence variations
+
+# ImportError: import error
+([sqlite3.sqlite_version_info[0], sqlite3.sqlite_version_info[1], 0], 2, [sqlite3.sqlite_version_info[2]], 1), # SQLite version info variations
+([len(sqlite3.sqlite_version), len(sqlite3.version), 0], 2, [sqlite3.SQLITE_OK], 1), # SQLite version length vs status code
+([pickle.HIGHEST_PROTOCOL, pickle.DEFAULT_PROTOCOL, 0], 2, [pickle.HIGHEST_PROTOCOL - 1], 1), # pickle protocol variations
+([len(pickle.dumps(1)), len(pickle.dumps(2)), 0], 2, [len(pickle.dumps(3))], 1), # pickle serialization size variations
+
+# UnicodeError: unicode error
+([unicodedata.normalize('NFC', 'café')[3], unicodedata.normalize('NFD', 'café')[3], 0], 2, [unicodedata.normalize('NFKC', 'café')[3]], 1), # Unicode normalization differences
+([unicodedata.category('A'), unicodedata.category('1'), 0], 2, [unicodedata.category('!')], 1), # Unicode category variations
+([len("hello".encode('utf-8')), len("hello".encode('utf-16')), 0], 2, [len("hello".encode('utf-32'))], 1), # character encoding size variations
+([len("café".encode('utf-8')), len("café".encode('latin-1')), 0], 2, [len("café".encode('utf-16'))], 1), # multi-byte character encoding variations
+([locale.setlocale(locale.LC_ALL, None) == 'C', locale.setlocale(locale.LC_ALL, None) == 'POSIX', 0], 2, [1], 1), # locale-specific formatting
+([len(locale.getdefaultlocale()[0] or ''), len(locale.getdefaultlocale()[1] or ''), 0], 2, [len(locale.getpreferredencoding())], 1), # locale preference variations
+([locale.strcoll("a", "b"), locale.strcoll("b", "c"), 0], 2, [locale.strcoll("c", "d")], 1), # locale-specific sorting
+
+# ValueError: value error
+([10, 13, 0], 2, [9], 1), # ASCII values for line endings
+
+# SyntaxError: invalid syntax
+'([1, 2, 3], 2, [4, 5], "1 + ")', # incomplete expression
+'([0, 0, 0], 1, ["def f(): pass; f("], 1)', # incomplete function call
+'({-1.1: -})]', # incomplete dict with syntax error
+'"for i in range(10): print(i"', # incomplete for loop
+'"if True: pass else"', # incomplete if statement
+'"try: pass except"', # incomplete try-except
+'"class C: def __init__(self"', # incomplete class definition
+'([0, 0, 0], 1, ["eval(\'[1, 2, 3\')"], 1)', # incomplete list
+'([0, 0, 0], 1, ["compile(\'if True\', \'<string>\', \'exec\')"], 1)', # incomplete syntax
+
+# ZeroDivisionError: division by zero
+'([0, 0, 0], 1, ["1 / 0"], 1)', # division by zero
+'([0, 0, 0], 1, ["float(\'inf\') / 0"], 1)', # infinity division
+'([0, 0, 0], 1, ["(-1) ** 0.5"], 1)', # complex number result
+'([0, 0, 0], 1, ["math.sqrt(-1)"], 1)', # math domain error
+
+# ImportError: module import issues
+'([0, 0, 0], 1, ["import nonexistent_module"], 1)', # non existent module
+'([0, 0, 0], 1, ["from math import nonexistent_function"], 1)', # non existent function
+
+# MemoryError
+'([0, 0, 0], 1, ["[0] * (10 ** 10)"], 1)', # huge list
+'([0, 0, 0], 1, ["{i: i for i in range(10**8)}"], 1)', # huge dict
+'([0, 0, 0], 1, ["\'" + "x" * 10000 + "\'"], 1)', # huge string
+'([0, 0, 0], 1, ["hashlib.sha256(b\'data\' * 10**8).hexdigest()"], 1)', # large hash input
+'([0, 0, 0], 1, ["hmac.new(b\'key\', b\'data\' * 10**8, hashlib.sha256)"], 1)', # large HMAC
+'([0, 0, 0], 1, ["lambda: lambda: lambda: 1"], 1)', # nested lambdas
+'([0, 0, 0], 1, ["[i for i in [i for i in range(10**6)]]"], 1)', # nested comprehension
+
+# UnicodeError
+'([0, 0, 0], 1, ["print(\'\\x00\\x01\\x02\')"], 1)', # control characters
+'([0, 0, 0], 1, ["\'\\U0001F600\'.encode(\'ascii\')"], 1)', # unicode to ASCII error
+'([0, 0, 0], 1, ["b\'\\xff\\xfe\'.decode(\'utf-16\')"], 1)', # BOM handling
+
+# UnicodeDecodeError
+'([0, 0, 0], 1, ["b\'\\xff\'.decode(\'utf-8\')"], 1)', # invalid UTF-8
+'([0, 0, 0], 1, ["\'\\ud800\'.encode(\'utf-8\')"], 1)', # invalid Unicode
+'([0, 0, 0], 1, ["chr(0x110000)"], 1)', # unicode out of range
+
+# ConnectionError
+'([0, 0, 0], 1, ["socket.create_connection((\'nonexistent.invalid\', 80))"], 1)', # DNS failure
+'([0, 0, 0], 1, ["urllib.request.urlopen(\'http://localhost:99999\')"], 1)', # connection refused
+'([0, 0, 0], 1, ["requests.get(\'http://10.0.0.1:80\', timeout=0.001)"], 1)', # timeout
+
+# RuntimeError
+'([0, 0, 0], 1, ["threading.Thread(target=lambda: 1/0).start()"], 1)', # thread exception
+'([0, 0, 0], 1, ["threading.Timer(-1, lambda: None).start()"], 1)', # invalid timer
+
+# RecursionError: infinite recursion
+'([0, 0, 0], 1, ["def f(): return f()"], 1)', # infinite recursion
+
+# sqlite3.OperationalError
+'([0, 0, 0], 1, ["sqlite3.connect(\':memory:\').execute(\'INVALID SQL\')"], 1)', # SQL syntax error
+'([0, 0, 0], 1, ["sqlite3.connect(\'/readonly/db\')"], 1)', # read-only filesystem
+
+# json.JSONDecodeError
+'([0, 0, 0], 1, ["json.loads(\'{invalid json}\')"], 1)', # invalid JSON
+
+# xml.etree.ElementTree.ParseError
+'([0, 0, 0], 1, ["xml.etree.ElementTree.fromstring(\'<unclosed>\')"], 1)', # invalid XML
+
+# re.error
+'([0, 0, 0], 1, ["re.compile(\'[invalid regex\')"], 1)', # invalid regex
+'([0, 0, 0], 1, ["re.search(\'(a+)+\', \'a\' * 1000)"], 1)', # catastrophic backtracking
+
+# zlib.error
+'([0, 0, 0], 1, ["zlib.decompress(b\'invalid_data\')"], 1)', # invalid compressed data
+'([0, 0, 0], 1, ["gzip.decompress(b\'not_gzip\')"], 1)', # invalid gzip data
+
+# urllib.error.URLError
+'([0, 0, 0], 1, ["urllib.parse.urlparse(\'http://[invalid_ipv6\')"], 1)', # invalid URL
+'([0, 0, 0], 1, ["urllib.request.urlopen(\'ftp://nonexistent.invalid\')"], 1)', # protocol error
+
+# ValueError
+'([0, 0, 0], 1, ["ast.literal_eval(\'1 + 2\')"], 1)', # expression not literal
+'([0, 0, 0], 1, ["time.sleep(-1)"], 1)', # invalid sleep time
+'([0, 0, 0], 1, ["datetime.datetime(1000, 1, 1)"], 1)', # date out of range
+'([0, 0, 0], 1, ["time.strftime(\'%Y\', time.gmtime(-1))"], 1)', # invalid timestamp
+'([0, 0, 0], 1, ["sys.setrecursionlimit(10**6)"], 1)', # extreme recursion limit
+'([0, 0, 0], 1, ["threading.stack_size(1024)"], 1)', # minimal stack size
+'([0, 0, 0], 1, ["resource.setrlimit(resource.RLIMIT_NOFILE, (10**6, 10**6))"], 1)', # file descriptor limit
+
+# security edition, weak cryptography
+# TypeError: type error
+([hashlib.md5(b"password123").hexdigest(), 0], 1, [hashlib.sha256(b"test").digest()[0]], 1), # weak hash usage
+([random.seed(1234); [random.randint(0, 10) for _ in range(100)], 0], 1, [random.randint(0, 255)], 1), # predictable random
+([hashlib.md5(b"test").digest()[0], hashlib.sha1(b"test").digest()[0], 0], 2, [hashlib.sha256(b"test").digest()[0]], 1), # hash algorithm variations
+([hashlib.sha256(b"").digest()[0], hashlib.sha256(b"a").digest()[0], 0], 2, [hashlib.sha256(b"ab").digest()[0]], 1), # hash input variations
+([random.randint(0, 255), random.randint(0, 255), 0], 2, [random.randint(0, 255)], 1), # random number generation
+([os.urandom(1)[0], os.urandom(1)[0], 0], 2, [os.urandom(1)[0]], 1), # cryptographic random
+([uuid.uuid4().int & 0xFFFF, uuid.uuid4().int & 0xFFFF, 0], 2, [uuid.uuid4().int & 0xFFFF], 1), # UUID variations
+
+# security edition, injection attack
+# SyntaxError: syntax error
+([ord('%'), ord('d'), 0], 2, [ord('s')], 1), # format specifiers
+([ord('\\'), ord('n'), 0], 2, [ord('t')], 1), # escape sequences
+([ord('{'), ord('}'), 0], 2, [ord('[')], 1), # bracket patterns
+([ord('.'), ord('.'), 0], 2, [ord('/')], 1), # directory traversal
+([ord('/'), ord('\\'), 0], 2, [ord(':')], 1), # path separators
+([ord('~'), ord('$'), 0], 2, [ord('*')], 1), # shell metacharacters
+
+# security edition, code injection
+# pickle.UnpicklingError
+'([0, 0, 0], 1, ["pickle.loads(b\'dangerous_pickle_data\')"], 1)', # unsafe pickle
+'([0, 0, 0], 1, ["pickle.dumps(lambda: os.system(\'rm -rf /\'))"], 1)', # dangerous lambda
+
+# security edition, command execution
+# subprocess.CalledProcessError
+'([0, 0, 0], 1, ["subprocess.run([\'nonexistent_command\'])"], 1)', # command not found
+
+# security edition, system command injection
+# ImportError: module import issues
+'([0, 0, 0], 1, ["__import__(\'os\').system(\'echo\')"], 1)', # security risk import
+
+# security edition, privilege escalation
+# PermissionError
+'([0, 0, 0], 1, ["os.chmod(\'/nonexistent\', 0o777)"], 1)', # chmod non existent file
+'([0, 0, 0], 1, ["os.chown(\'/tmp\', 0, 0)"], 1)', # chown permission denied
+'([0, 0, 0], 1, ["os.nice(-20)"], 1)', # nice permission denied
+'([0, 0, 0], 1, ["os.kill(999999, 9)"], 1)', # kill non existent process
+'([0, 0, 0], 1, ["os.setuid(0)"], 1)', # permission denied
+
+# security edition, file system access
+# FileNotFoundError
+'([0, 0, 0], 1, ["open(\'/nonexistent/path\')"], 1)', # file not found
+'([0, 0, 0], 1, ["open(\'/dev/null\', \'w\').write(\'x\' * 10**9)"], 1)', # disk full simulation
+'([0, 0, 0], 1, ["os.remove(\'/nonexistent\')"], 1)', # remove non existent file
+
+# security edition, os fingerprinting
+# ValueError: invalid os
+([os.name == 'nt', os.name == 'posix', 0], 2, [os.name == 'java'], 1), # operating system variations
+([len(os.name), len(os.sep), 0], 2, [len(os.pathsep)], 1), # os specific constants
+
+# security edition, path traversal attack
+# ValueError: invalid path
+([ord('\\'), ord(':'), 0], 2, [ord('|')], 1), # windows path chars
+([ord('/'), ord('~'), 0], 2, [ord('.')], 1), # unix path chars
+([len(os.sep), len(os.pathsep), 0], 2, [len(os.linesep)], 1), # cross platform path separators
+([ord('\\'), ord('/'), 0], 2, [ord(':')], 1), # path separator characters
+([ord('\\') if os.name == 'nt' else ord('/'), 0], 1, [ord(':')], 1), # platform specific separators
+([ord('\n'), ord('\r'), 0], 2, [ord('\t')], 1), # line ending differences
+
+# security edition, buffer overflow
+# ValueError: extreme value
+([0x5A, 0xA5, 0], 2, [0xFF], 1), # bit patterns
+([0x12345678 & 0xFFFF, 0x87654321 & 0xFFFF, 0], 2, [0xABCDEF01 & 0xFFFF], 1), # hex patterns
+([sys.maxsize, sys.maxsize - 1, 0], 2, [sys.maxsize - 2], 1), # maximum values
+([-sys.maxsize, -sys.maxsize + 1, 0], 2, [-sys.maxsize + 2], 1), # minimum values
+([hash(i) & 0xFFFF for i in range(10)] + [0] * 10, 10, [hash(i+100) & 0xFFFF for i in range(10)], 10), # hash based pseudo random
+([0x7FFFFFFF, 0x7FFFFFFE, 0], 2, [0x7FFFFFFD], 1), # 32 bit signed max
+([0xFFFFFFFF, 0xFFFFFFFE, 0], 2, [0xFFFFFFFD], 1), # 32 bit unsigned max
+([1000000000, 4, 6, 0, 0, 0], 3, [1, 3, 5], 3), # too big
+([-1000000000, 4, 6, 0, 0, 0], 3, [1, 3, 5], 3), # too small
+([999999, 999998, 999997, 0, 0, 0], 3, [999996, 999995, 999994], 3), # large numbers
+([1] * 1000 + [0] * 1000, 1000, [2] * 1000, 1000), # repeated values
+([i for i in range(1000)] + [0] * 1000, 1000, [i for i in range(1000, 2000)], 1000), # sequential values
+([1000, 2000, 0], 2, [3000], 1), # number formatting differences
+([100, 200, 0], 2, [300], 1), # decimal separators
+
+# security edition, encoding attack
+# ValueError: invalid conversion
+([0x1F600, 0x1F601, 0], 2, [0x1F602], 1), # emoji code points
+([int(3.14), int(2.71), 0], 2, [int(1.41)], 1), # float to int conversion
+([0x41, 0x5A, 0], 2, [0x61], 1), # unicode code points
+([0x0, 0x1F, 0], 2, [0x7F], 1), # control characters
+([0x80, 0xFF, 0], 2, [0x100], 1), # extended ASCII
+([0x10000, 0x10FFFF, 0], 2, [0x1FFFF], 1), # unicode planes
+([ord('A'), ord('Z'), 0], 2, [ord('a')], 1), # unicode handling differences
+
+# security edition, boundary bypass
+# ValueError: cross boundary
+([0, 1, 0], 2, [-1], 1), # zero crossing
+([255, 256, 0], 2, [254], 1), # byte boundary
+([65535, 65536, 0], 2, [65534], 1), # word boundary
+([2**20 - 1, 2**20, 0], 2, [2**20 + 1], 1), # MB boundary
+([ord('0'), ord('9'), 0], 2, [ord('A')], 1), # digit to letter boundary
+([ord('Z'), ord('a'), 0], 2, [ord('z')], 1), # case boundary
+([0, 86400, 0], 2, [604800], 1), # day/week boundaries
+([1970, 2038, 0], 2, [2106], 1), # unix epoch boundaries
+([2**15 - 1, 2**15, 0], 2, [2**15 + 1], 1), # 16-bit boundaries
+([2**31 - 1, 2**31, 0], 2, [2**31 + 1], 1), # 32-bit boundaries
+([2**63 - 1, 2**63 - 2, 0], 2, [2**63 - 3], 1), # 64-bit boundaries
+([sys.maxsize - 1, sys.maxsize - 2, 0], 2, [sys.maxsize - 3], 1), # system max size boundaries
+([int(sys.float_info.max / 1e10), int(sys.float_info.min * 1e10), 0], 2, [int(sys.float_info.epsilon * 1e10)], 1), # floating point edge cases
+
+# security edition, resource exhaustion
+# ValueError: over limitation
+([2**31 - 1, 2**63 - 1, 0], 2, [2**32 - 1], 1), # architecture limits
+([sys.getrecursionlimit(), sys.getrecursionlimit() - 1, 0], 2, [sys.getrecursionlimit() - 2], 1), # recursion limits
+([len(os.environ.get('PATH', '')), len(os.environ.get('HOME', '')), 0], 2, [len(os.environ.get('USER', ''))], 1), # environment variables
+([len(os.environ.get('TEMP', '')), len(os.environ.get('TMP', '')), 0], 2, [len(os.environ.get('TMPDIR', ''))], 1), # temp directory variations
+([signal.SIGINT, signal.SIGTERM, 0], 2, [signal.SIGKILL if hasattr(signal, 'SIGKILL') else 9], 1), # signal number variations
+([signal.SIGUSR1 if hasattr(signal, 'SIGUSR1') else 10, signal.SIGUSR2 if hasattr(signal, 'SIGUSR2') else 12, 0], 2, [signal.SIGPIPE if hasattr(signal, 'SIGPIPE') else 13], 1), # user signals
+([os.getpid() % 1000, os.getppid() % 1000, 0], 2, [os.getuid() % 1000 if hasattr(os, 'getuid') else 0], 1), # process-based taint
+
 
 """
-# Python evaluates test cases before function call, pass arguments as strings to solve the errors 
+# Python evaluates test cases before function call, pass arguments as strings to solve the errors
 # ValueError/OverflowError: impossible to calculate
+([0, 0, 0], 1, [2], "10 ** (-10 ** 10)"), # impossible negative integer
+([0, "10 ** (-10 ** 10)", 0], 1, [2], 1), # impossible negative in list
+([0, 0, 0], 1, ["10 ** (10 ** 10)"], 4), # impossible large integer
+"[i % 9 for i in range(10000000000000000000)]", # too large calculation
 ([0, 0, 0], 1, [2], 10 ** (-10 ** 10)), # impossible negative integer
 ([0, 10 ** (-10 ** 10), 0], 1, [2], 1), # impossible negative integer in list
 ([0, 0, 0], 1, [10 ** (10 ** 10)], 4), # impossible integer in list
 [i % 9 for i in range(10000000000000000000)], # too large calculation
 
-# SyntaxError: invalid syntax
+# TypeError/SyntaxError: invalid syntax
 ({-1.1: -2.2, -'hello': -3.3}, 1, [2], 2) # invalid dict key
 """
