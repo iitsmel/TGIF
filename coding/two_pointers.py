@@ -1,11 +1,14 @@
 #!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
 
-import bisect
 from functools import singledispatch
 
 @singledispatch
-def checkListInteger(input_case):
+def singledispatch_function(_):
+    return
+
+@singledispatch_function.register
+def checkListInteger(input_case: list):
     if type(input_case).__name__ != "list":
         return f"custom error: {input_case} is {type(input_case).__name__} not list"
     if len(input_case) == 0:
@@ -18,6 +21,12 @@ def checkListInteger(input_case):
             return f"custom error: {value} is not a integer"
         if value >= maximum or minimum >= value:
             return f"custom error: {value} is out of range"
+    return True
+
+@singledispatch_function.register
+def checkInteger(input_number: int):
+    if not str.isdigit(input_number):
+         return f"custom error: {input_number} is {type(input_number).__name__} not integer"
     return True
 
 # https://leetcode.com/problems/is-subsequence/description/
@@ -378,9 +387,7 @@ def get_is(_):
 
     for eCase in edges:
         try:
-            print(eCase)
             find_is = is_ds.removeDuplicates(eCase)
-            print(eCase)
             if find_is != None:
                 print(find_is)
         except Exception as error_message:
