@@ -5,7 +5,7 @@ import random
 from functools import singledispatch
 
 @singledispatch
-def checkInteger(input_case):
+def checkListInteger(input_case):
     if type(input_case).__name__ != "list":
         return f"custom error: {input_case} is {type(input_case).__name__} not list"
     if len(input_case) == 0:
@@ -25,7 +25,7 @@ def checkInteger(input_case):
 class MergeSortedArray:
     def merge(self, nums1, m, nums2, n):
         total = list(nums1) + list(nums2) + [m,n]
-        checking = checkInteger(total)
+        checking = checkListInteger(total)
         if checking is not True:
             print(checking)
             return
@@ -125,7 +125,7 @@ print()
 # Remove Duplicates from Sorted Array, easy
 class RemoveDuplicatesOne:
     def removeDuplicates(self, nums):
-        checking = checkInteger(nums)
+        checking = checkListInteger(nums)
         if checking is not True:
             print(checking)
             return
@@ -228,7 +228,7 @@ print()
 # Remove Duplicates from Sorted Array II, medium
 class RemoveDuplicatesTwo:
     def removeDuplicates(self, nums):
-        checking = checkInteger(nums)
+        checking = checkListInteger(nums)
         if checking is not True:
             return
         if len(nums) <= 2:

@@ -1,6 +1,25 @@
 #!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
 
+import bisect
+from functools import singledispatch
+
+@singledispatch
+def checkListInteger(input_case):
+    if type(input_case).__name__ != "list":
+        return f"custom error: {input_case} is {type(input_case).__name__} not list"
+    if len(input_case) == 0:
+        return f"custom error: {input_case} is empty" 
+    maximum = 10_000_000
+    minimum = -10_000_000
+    for value in input_case:
+        turn_string = str(value)
+        if not turn_string.lstrip('-+').isdigit():
+            return f"custom error: {value} is not a integer"
+        if value >= maximum or minimum >= value:
+            return f"custom error: {value} is out of range"
+    return True
+
 # https://leetcode.com/problems/is-subsequence/description/
 # Is Subsequence, easy
 class IsSubsequence:
