@@ -40,7 +40,7 @@ def get_is(_):
     print()
 
     if input("Next: 352 edge cases \ncontinue: ").strip().lower() != "y":
-        exit()
+        return
 
     print()
 
