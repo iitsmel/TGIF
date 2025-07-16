@@ -1,0 +1,743 @@
+# MemoryError: massive string allocation
+("a" * 10**7, "a" * 10**8)
+
+# TypeError: None input
+(None, "string")
+
+# AttributeError: non-string object
+(123, "number")
+
+# IndexError: extreme negative indexing scenario
+("test"[-100:], "negative")
+
+# UnicodeError: invalid surrogate pair
+("\ud800", "surrogate\ud800pair")
+
+# UnicodeDecodeError: malformed UTF-8
+("\udcff", "surr\udcffgate")
+
+# RecursionError: deep recursion trigger
+("a" * 10000, "a" * 10000)
+
+# OverflowError: integer overflow scenario
+("x" * (2**31), "overflow")
+
+# ZeroDivisionError: division in length calculation
+("", "divide" + "a" * 0)
+
+# OSError: system-specific path separator
+("path\\to", "path\\to\\file")
+
+# EncodingError: mixed encoding characters
+("café", "caf\xe9")
+
+# NormalizationError: Unicode normalization difference
+("é", "e\u0301")
+
+# CaseError: case sensitivity compilation flag
+("ABC", "abc")
+
+# LocaleError: locale-specific character handling
+("ß", "straße")
+
+# EndianError: byte order mark handling
+("\ufeff", "bom\ufeffmark")
+
+# TimeoutError: algorithmic complexity explosion
+("abcdefghijklmnopqrstuvwxyz", "azbycxdwevfugthsirjqkplomn")
+
+# BufferError: string buffer overflow simulation
+("buffer" * 10**6, "b")
+
+# SystemError: system limit exceeded
+("sys" * (2**20), "system")
+
+# RuntimeError: infinite loop detection
+("loop", "l" + "o" * 10**6 + "op")
+
+# ValueError: invalid string format
+("invalid\x00", "null\x00byte")
+
+# KeyError: dictionary-like access pattern
+("key", "k" + "e" * 10**5 + "y")
+
+# StopIteration: iterator exhaustion
+("iter", "i" * 10**4 + "ter")
+
+# GeneratorExit: generator cleanup
+("gen", "g" * 10**3 + "en")
+
+# KeyboardInterrupt: long-running operation
+("interrupt", "i" * 10**7 + "nterrupt")
+
+# NotImplementedError: unsupported operation
+("∞", "infinity∞")
+
+# ImportError: module dependency issue
+("import", "imp" + "o" * 10**5 + "rt")
+
+# IOError: input/output operation
+("io", "i" + "\r\n" * 10**4 + "o")
+
+# EnvironmentError: environment variable issue
+("env", "e" + "$" * 10**3 + "nv")
+
+# WindowsError: Windows-specific error
+("windows\r\n", "windows\r\n\r\n")
+
+# BlockingIOError: non-blocking I/O
+("block", "b" + "\x00" * 10**3 + "lock")
+
+# ChildProcessError: subprocess handling
+("child", "c" + "\x01" * 10**3 + "hild")
+
+# ConnectionError: network connection
+("connect", "c" + ":" * 10**3 + "onnect")
+
+# BrokenPipeError: pipe communication
+("pipe", "p" + "|" * 10**3 + "ipe")
+
+# FileNotFoundError: file access
+("file", "f" + "/" * 10**3 + "ile")
+
+# PermissionError: access rights
+("perm", "p" + "!" * 10**3 + "erm")
+
+# ProcessLookupError: process management
+("proc", "p" + "#" * 10**3 + "roc")
+
+# InterruptedError: system call interruption
+("signal", "s" + "%" * 10**3 + "ignal")
+
+# IsADirectoryError: directory vs file
+("dir", "d" + "\\" * 10**3 + "ir")
+
+# NotADirectoryError: file vs directory
+("notdir", "n" + "." * 10**3 + "otdir")
+
+# EmptyError: empty container access
+("empty", "")
+
+# FullError: container capacity exceeded
+("full", "f" + "u" * 10**6 + "ll")
+
+# WeakReferenceError: garbage collection
+("weak", "w" + "e" * 10**5 + "ak")
+
+# ReferenceError: reference counting
+("ref", "r" + "e" * 10**5 + "f")
+
+# SyntaxError: malformed input pattern
+("syntax", "s{yn}tax")
+
+# IndentationError: whitespace handling
+("indent", "\t\t\tindent")
+
+# TabError: mixed tabs and spaces
+("tab", "\t \ttab")
+
+# UnboundLocalError: variable scope
+("unbound", "u" + "n" * 10**4 + "bound")
+
+# NameError: undefined reference
+("name", "n" + "a" * 10**4 + "me")
+
+# ArithmeticError: mathematical operation
+("math", "m" + "+" * 10**3 + "ath")
+
+# AssertionError: assertion failure
+("assert", "a" + "=" * 10**3 + "ssert")
+
+# EOFError: end of file/input
+("eof", "e" + "\x04" * 10**3 + "of")
+
+# LookupError: key/index not found
+("lookup", "l" + "?" * 10**3 + "ookup")
+
+# StopAsyncIteration: async iterator exhaustion
+("async", "a" + "~" * 10**3 + "sync")
+
+# ModuleNotFoundError: missing module
+("module", "m" + "@" * 10**3 + "odule")
+
+# ResourceWarning: resource leak
+("resource", "r" + "&" * 10**3 + "esource")
+
+# DeprecationWarning: deprecated feature
+("deprecated", "d" + "^" * 10**3 + "eprecated")
+
+# PendingDeprecationWarning: future deprecation
+("pending", "p" + "*" * 10**3 + "ending")
+
+# RuntimeWarning: runtime issue
+("runtime", "r" + "(" * 10**3 + "untime")
+
+# SyntaxWarning: questionable syntax
+("synwarn", "s" + ")" * 10**3 + "ynwarn")
+
+# UserWarning: user-defined warning
+("user", "u" + "" * 10**3 + "uture")
+
+# ImportWarning: import system warning
+("impwarn", "i" + "[" * 10**3 + "mpwarn")
+
+# UnicodeWarning: unicode handling warning
+("uniwarn", "u" + "]" * 10**3 + "niwarn")
+
+# BytesWarning: bytes/string mixing
+("bytes", "b" + "\\x" * 10**3 + "ytes")
+
+# ResourceError: system resource exhaustion
+("sysres", "s" + ";" * 10**3 + "ysres")
+
+# CompilerError: compilation failure
+("compile", "c" + "'" * 10**3 + "ompile")
+
+# InterpreterError: interpreter issue
+("interp", "i" + '"' * 10**3 + "nterp")
+
+# OptimizationError: optimization failure
+("optimize", "o" + "`" * 10**3 + "ptimize")
+
+# ThreadingError: multi-threading issue
+("thread", "t" + "~" * 10**3 + "hread")
+
+# LockError: synchronization problem
+("lock", "l" + "±" * 10**3 + "ock")
+
+# DeadlockError: deadlock detection
+("deadlock", "d" + "∞" * 10**3 + "eadlock")
+
+# StackOverflowError: call stack exhaustion
+("stack", "s" + "↑" * 10**3 + "tack")
+
+# HeapError: heap memory issue
+("heap", "h" + "↓" * 10**3 + "eap")
+
+# SegmentationError: memory segmentation
+("segment", "s" + "→" * 10**3 + "egment")
+
+# AccessViolationError: memory access violation
+("access", "a" + "←" * 10**3 + "ccess")
+
+# ProtectionError: memory protection
+("protect", "p" + "↔" * 10**3 + "rotect")
+
+# AlignmentError: memory alignment
+("align", "a" + "↕" * 10**3 + "lign")
+
+# CacheError: cache system failure
+("cache", "c" + "⊕" * 10**3 + "ache")
+
+# NetworkError: network communication
+("network", "n" + "⊗" * 10**3 + "etwork")
+
+# DatabaseError: database operation
+("database", "d" + "⊙" * 10**3 + "atabase")
+
+# ConfigError: configuration issue
+("config", "c" + "⊘" * 10**3 + "onfig")
+
+# ValidationError: input validation
+("validate", "v" + "⊚" * 10**3 + "alidate")
+
+# SerializationError: object serialization
+("serialize", "s" + "⊛" * 10**3 + "erialize")
+
+# CompressionError: data compression
+("compress", "c" + "⊜" * 10**3 + "ompress")
+
+# EncryptionError: encryption/decryption
+("encrypt", "e" + "⊝" * 10**3 + "ncrypt")
+
+# AuthenticationError: authentication failure
+("auth", "a" + "⊞" * 10**3 + "uth")
+
+# AuthorizationError: authorization failure
+("authz", "a" + "⊟" * 10**3 + "uthz")
+
+# TokenError: token processing
+("token", "t" + "⊠" * 10**3 + "oken")
+
+# SessionError: session management
+("session", "s" + "⊡" * 10**3 + "ession")
+
+# CookieError: cookie handling
+("cookie", "c" + "⋄" * 10**3 + "ookie")
+
+# HeaderError: HTTP header issue
+("header", "h" + "⋅" * 10**3 + "eader")
+
+# BodyError: HTTP body processing
+("body", "b" + "⋆" * 10**3 + "ody")
+
+# StreamError: data streaming
+("stream", "s" + "⋇" * 10**3 + "tream")
+
+# BufferOverflowError: buffer overflow
+("overflow", "o" + "⋈" * 10**3 + "verflow")
+
+# UnderflowError: buffer underflow
+("underflow", "u" + "⋉" * 10**3 + "nderflow")
+
+# PrecisionError: floating point precision
+("precision", "p" + "⋊" * 10**3 + "recision")
+
+# RoundingError: number rounding
+("rounding", "r" + "⋋" * 10**3 + "ounding")
+
+# TruncationError: data truncation
+("truncate", "t" + "⋌" * 10**3 + "runcate")
+
+# QuantizationError: quantization
+("quantize", "q" + "⋍" * 10**3 + "uantize")
+
+# SamplingError: sampling operation
+("sample", "s" + "⋎" * 10**3 + "ample")
+
+# InterpolationError: interpolation
+("interpolate", "i" + "⋏" * 10**3 + "nterpolate")
+
+# ExtrapolationError: extrapolation
+("extrapolate", "e" + "⋐" * 10**3 + "xtrapolate")
+
+# ConvergenceError: algorithm convergence
+("converge", "c" + "⋑" * 10**3 + "onverge")
+
+# DivergenceError: algorithm divergence
+("diverge", "d" + "⋒" * 10**3 + "iverge")
+
+# StabilityError: numerical stability
+("stability", "s" + "⋓" * 10**3 + "tability")
+
+# AccuracyError: computational accuracy
+("accuracy", "a" + "⋔" * 10**3 + "ccuracy")
+
+# EfficiencyError: algorithm efficiency
+("efficiency", "e" + "⋕" * 10**3 + "fficiency")
+
+# ScalabilityError: system scalability
+("scalability", "s" + "⋖" * 10**3 + "calability")
+
+# PerformanceError: performance issue
+("performance", "p" + "⋗" * 10**3 + "erformance")
+
+# LatencyError: system latency
+("latency", "l" + "⋘" * 10**3 + "atency")
+
+# ThroughputError: system throughput
+("throughput", "t" + "⋙" * 10**3 + "hroughput")
+
+# BandwidthError: bandwidth limitation
+("bandwidth", "b" + "⋚" * 10**3 + "andwidth")
+
+# CapacityError: system capacity
+("capacity", "c" + "⋛" * 10**3 + "apacity")
+
+# QuotaError: resource quota exceeded
+("quota", "q" + "⋜" * 10**3 + "uota")
+
+# LimitError: system limit reached
+("limit", "l" + "⋝" * 10**3 + "imit")
+
+# ThrottleError: request throttling
+("throttle", "t" + "⋞" * 10**3 + "hrottle")
+
+# RateLimitError: rate limiting
+("ratelimit", "r" + "⋟" * 10**3 + "atelimit")
+
+# CircuitBreakerError: circuit breaker
+("circuit", "c" + "⋠" * 10**3 + "ircuit")
+
+# RetryError: retry mechanism failure
+("retry", "r" + "⋡" * 10**3 + "etry")
+
+# BackoffError: backoff strategy
+("backoff", "b" + "⋢" * 10**3 + "ackoff")
+
+# JitterError: timing jitter
+("jitter", "j" + "⋣" * 10**3 + "itter")
+
+# SkewError: clock skew
+("skew", "s" + "⋤" * 10**3 + "kew")
+
+# DriftError: clock drift
+("drift", "d" + "⋥" * 10**3 + "rift")
+
+# SyncError: synchronization error
+("sync", "s" + "⋦" * 10**3 + "ync")
+
+# AsyncError: asynchronous operation error
+("asyncerr", "a" + "⋧" * 10**3 + "syncerr")
+
+# ConcurrencyError: concurrent access
+("concurrency", "c" + "⋨" * 10**3 + "oncurrency")
+
+# ParallelError: parallel processing
+("parallel", "p" + "⋩" * 10**3 + "arallel")
+
+# DistributedError: distributed system
+("distributed", "d" + "⋪" * 10**3 + "istributed")
+
+# ClusterError: cluster operation
+("cluster", "c" + "⋫" * 10**3 + "luster")
+
+# NodeError: node failure
+("node", "n" + "⋬" * 10**3 + "ode")
+
+# PartitionError: data partitioning
+("partition", "p" + "⋭" * 10**3 + "artition")
+
+# ReplicationError: data replication
+("replication", "r" + "⋮" * 10**3 + "eplication")
+
+# ConsistencyError: data consistency
+("consistency", "c" + "⋯" * 10**3 + "onsistency")
+
+# IntegrityError: data integrity
+("integrity", "i" + "⋰" * 10**3 + "ntegrity")
+
+# CorruptionError: data corruption
+("corruption", "c" + "⋱" * 10**3 + "orruption")
+
+# ChecksumError: checksum mismatch
+("checksum", "c" + "⋲" * 10**3 + "hecksum")
+
+# HashError: hash function issue
+("hash", "h" + "⋳" * 10**3 + "ash")
+
+# SignatureError: digital signature
+("signature", "s" + "⋴" * 10**3 + "ignature")
+
+# CertificateError: certificate validation
+("certificate", "c" + "⋵" * 10**3 + "ertificate")
+
+# TrustError: trust relationship
+("trust", "t" + "⋶" * 10**3 + "rust")
+
+# VerificationError: verification failure
+("verification", "v" + "⋷" * 10**3 + "erification")
+
+# ComplianceError: compliance violation
+("compliance", "c" + "⋸" * 10**3 + "ompliance")
+
+# AuditError: audit failure
+("audit", "a" + "⋹" * 10**3 + "udit")
+
+# LogError: logging system error
+("log", "l" + "⋺" * 10**3 + "og")
+
+# MetricsError: metrics collection
+("metrics", "m" + "⋻" * 10**3 + "etrics")
+
+# MonitoringError: monitoring system
+("monitoring", "m" + "⋼" * 10**3 + "onitoring")
+
+# AlertError: alerting system
+("alert", "a" + "⋽" * 10**3 + "lert")
+
+# NotificationError: notification delivery
+("notification", "n" + "⋾" * 10**3 + "otification")
+
+# EscalationError: escalation process
+("escalation", "e" + "⋿" * 10**3 + "scalation")
+
+# RecoveryError: disaster recovery
+("recovery", "r" + "⌀" * 10**3 + "ecovery")
+
+# BackupError: backup operation
+("backup", "b" + "⌁" * 10**3 + "ackup")
+
+# RestoreError: restore operation
+("restore", "r" + "⌂" * 10**3 + "estore")
+
+# MigrationError: data migration
+("migration", "m" + "⌃" * 10**3 + "igration")
+
+# UpgradeError: system upgrade
+("upgrade", "u" + "⌄" * 10**3 + "pgrade")
+
+# DowngradeError: system downgrade
+("downgrade", "d" + "⌅" * 10**3 + "owngrade")
+
+# RollbackError: rollback operation
+("rollback", "r" + "⌆" * 10**3 + "ollback")
+
+# DeploymentError: deployment failure
+("deployment", "d" + "⌇" * 10**3 + "eployment")
+
+# ConfigurationError: configuration error
+("configuration", "c" + "⌈" * 10**3 + "onfiguration")
+
+# InitializationError: initialization failure
+("initialization", "i" + "⌉" * 10**3 + "nitialization")
+
+# ShutdownError: shutdown failure
+("shutdown", "s" + "⌊" * 10**3 + "hutdown")
+
+# MaintenanceError: maintenance mode
+("maintenance", "m" + "⌋" * 10**3 + "aintenance")
+
+# UnavailableError: service unavailable
+("unavailable", "u" + "⌌" * 10**3 + "navailable")
+
+# OverloadError: system overload
+("overload", "o" + "⌍" * 10**3 + "verload")
+
+# StarvationError: resource starvation
+("starvation", "s" + "⌎" * 10**3 + "tarvation")
+
+# ContentionError: resource contention
+("contention", "c" + "⌏" * 10**3 + "ontention")
+
+# PriorityError: priority handling
+("priority", "p" + "⌐" * 10**3 + "riority")
+
+# SchedulingError: task scheduling
+("scheduling", "s" + "⌑" * 10**3 + "cheduling")
+
+# LoadBalancingError: load balancing
+("loadbalancing", "l" + "⌒" * 10**3 + "oadbalancing")
+
+# FailoverError: failover mechanism
+("failover", "f" + "⌓" * 10**3 + "ailover")
+
+# RedundancyError: redundancy failure
+("redundancy", "r" + "⌔" * 10**3 + "edundancy")
+
+# PartitioningError: network partitioning
+("partitioning", "p" + "⌕" * 10**3 + "artitioning")
+
+# ByzantineError: Byzantine failure
+("byzantine", "b" + "⌖" * 10**3 + "yzantine")
+
+# ConsensusError: consensus algorithm
+("consensus", "c" + "⌗" * 10**3 + "onsensus")
+
+# LeaderElectionError: leader election
+("leaderelection", "l" + "⌘" * 10**3 + "eaderelection")
+
+# SplitBrainError: split brain scenario
+("splitbrain", "s" + "⌙" * 10**3 + "plitbrain")
+
+# QuorumError: quorum failure
+("quorum", "q" + "⌚" * 10**3 + "uorum")
+
+# MajorityError: majority decision
+("majority", "m" + "⌛" * 10**3 + "ajority")
+
+# MinorityError: minority protection
+("minority", "m" + "⌜" * 10**3 + "inority")
+
+# VotingError: voting mechanism
+("voting", "v" + "⌝" * 10**3 + "oting")
+
+# ElectionError: election process
+("election", "e" + "⌞" * 10**3 + "lection")
+
+# CampaignError: campaign management
+("campaign", "c" + "⌟" * 10**3 + "ampaign")
+
+# TermError: term management
+("term", "t" + "⌠" * 10**3 + "erm")
+
+# ExpirationError: expiration handling
+("expiration", "e" + "⌡" * 10**3 + "xpiration")
+
+# RenewalError: renewal process
+("renewal", "r" + "⌢" * 10**3 + "enewal")
+
+# RefreshError: refresh operation
+("refresh", "r" + "⌣" * 10**3 + "efresh")
+
+# CacheInvalidationError: cache invalidation
+("cacheinvalidation", "c" + "⌤" * 10**3 + "acheinvalidation")
+
+# StaleDataError: stale data detection
+("staledata", "s" + "⌥" * 10**3 + "taledata")
+
+# VersioningError: version control
+("versioning", "v" + "⌦" * 10**3 + "ersioning")
+
+# ConflictError: merge conflict
+("conflict", "c" + "⌧" * 10**3 + "onflict")
+
+# MergeError: merge operation
+("merge", "m" + "⌨" * 10**3 + "erge")
+
+# BranchingError: branching strategy
+("branching", "b" + "〈" * 10**3 + "ranching")
+
+# TaggingError: tagging system
+("tagging", "t" + "〉" * 10**3 + "agging")
+
+# ReleaseError: release management
+("release", "r" + "⌫" * 10**3 + "elease")
+
+# HotfixError: hotfix deployment
+("hotfix", "h" + "⌬" * 10**3 + "otfix")
+
+# PatchError: patch application
+("patch", "p" + "⌭" * 10**3 + "atch")
+
+# UpdateError: update process
+("update", "u" + "⌮" * 10**3 + "pdate")
+
+# InstallError: installation failure
+("install", "i" + "⌯" * 10**3 + "nstall")
+
+# UninstallError: uninstallation failure
+("uninstall", "u" + "⌰" * 10**3 + "ninstall")
+
+# ActivationError: activation process
+("activation", "a" + "⌱" * 10**3 + "ctivation")
+
+# DeactivationError: deactivation process
+("deactivation", "d" + "⌲" * 10**3 + "eactivation")
+
+# RegistrationError: registration failure
+("registration", "r" + "⌳" * 10**3 + "egistration")
+
+# UnregistrationError: unregistration failure
+("unregistration", "u" + "⌴" * 10**3 + "nregistration")
+
+# SubscriptionError: subscription management
+("subscription", "s" + "⌵" * 10**3 + "ubscription")
+
+# UnsubscriptionError: unsubscription process
+("unsubscription", "u" + "⌶" * 10**3 + "nsubscription")
+
+# PublicationError: publication failure
+("publication", "p" + "⌷" * 10**3 + "ublication")
+
+# DiscoveryError: service discovery
+("discovery", "d" + "⌸" * 10**3 + "iscovery")
+
+# AdvertisementError: service advertisement
+("advertisement", "a" + "⌹" * 10**3 + "dvertisement")
+
+# AnnouncementError: announcement failure
+("announcement", "a" + "⌺" * 10**3 + "nnouncement")
+
+# BroadcastError: broadcast failure
+("broadcast", "b" + "⌻" * 10**3 + "roadcast")
+
+# MulticastError: multicast failure
+("multicast", "m" + "⌼" * 10**3 + "ulticast")
+
+# UnicastError: unicast failure
+("unicast", "u" + "⌽" * 10**3 + "nicast")
+
+# RoutingError: routing failure
+("routing", "r" + "⌾" * 10**3 + "outing")
+
+# ForwardingError: packet forwarding
+("forwarding", "f" + "⌿" * 10**3 + "orwarding")
+
+# SwitchingError: switching failure
+("switching", "s" + "⍀" * 10**3 + "witching")
+
+# BridgingError: bridging failure
+("bridging", "b" + "⍁" * 10**3 + "ridging")
+
+# TunnelingError: tunneling failure
+("tunneling", "t" + "⍂" * 10**3 + "unneling")
+
+# ProxyError: proxy operation
+("proxy", "p" + "⍃" * 10**3 + "roxy")
+
+# GatewayError: gateway operation
+("gateway", "g" + "⍄" * 10**3 + "ateway")
+
+# FirewallError: firewall operation
+("firewall", "f" + "⍅" * 10**3 + "irewall")
+
+# Intrusion detection Error: intrusion detection
+("intrusion", "i" + "⍆" * 10**3 + "ntrusion")
+
+# AntivirusError: antivirus operation
+("antivirus", "a" + "⍇" * 10**3 + "ntivirus")
+
+# MalwareError: malware detection
+("malware", "m" + "⍈" * 10**3 + "alware")
+
+# SpamError: spam detection
+("spam", "s" + "⍉" * 10**3 + "pam")
+
+# PhishingError: phishing detection
+("phishing", "p" + "⍊" * 10**3 + "hishing")
+
+# FraudError: fraud detection
+("fraud", "f" + "⍋" * 10**3 + "raud")
+
+# AnomalyError: anomaly detection
+("anomaly", "a" + "⍌" * 10**3 + "nomaly")
+
+# OutlierError: outlier detection
+("outlier", "o" + "⍍" * 10**3 + "utlier")
+
+# ClassificationError: classification failure
+("classification", "c" + "⍎" * 10**3 + "lassification")
+
+# ClusteringError: clustering failure
+("clustering", "c" + "⍏" * 10**3 + "lustering")
+
+# RegressionError: regression failure
+("regression", "r" + "⍐" * 10**3 + "egression")
+
+# PredictionError: prediction failure
+("prediction", "p" + "⍑" * 10**3 + "rediction")
+
+# ForecastingError: forecasting failure
+("forecasting", "f" + "⍒" * 10**3 + "orecasting")
+
+# OptimizationError: optimization failure
+("optimization", "o" + "⍓" * 10**3 + "ptimization")
+
+# EvolutionError: evolutionary algorithm
+("evolution", "e" + "⍔" * 10**3 + "volution")
+
+# GeneticError: genetic algorithm
+("genetic", "g" + "⍕" * 10**3 + "enetic")
+
+# NeuralNetworkError: neural network
+("neuralnetwork", "n" + "⍖" * 10**3 + "euralnetwork")
+
+# DeepLearningError: deep learning
+("deeplearning", "d" + "⍗" * 10**3 + "eeplearning")
+
+# MachineLearningError: machine learning
+("machinelearning", "m" + "⍘" * 10**3 + "achinelearning")
+
+# ArtificialIntelligenceError: AI
+("artificialintelligence", "a" + "⍙" * 10**3 + "rtificialintelligence")
+
+# NaturalLanguageError: NLP
+("naturallanguage", "n" + "⍚" * 10**3 + "aturallanguage")
+
+# ComputerVisionError: computer vision
+("computervision", "c" + "⍛" * 10**3 + "omputervision")
+
+# ImageProcessingError: image processing
+("imageprocessing", "i" + "⍜" * 10**3 + "mageprocessing")
+
+# SignalProcessingError: signal processing
+("signalprocessing", "s" + "⍝" * 10**3 + "ignalprocessing")
+
+# DataMiningError: data mining
+("datamining", "d" + "⍞" * 10**3 + "atamining")
+
+# BigDataError: big data processing
+("bigdata", "b" + "⍟" * 10**3 + "igdata")
+
+# StreamingError: stream processing
+("streaming", "s" + "⍠" * 10**3 + "treaming")
+
+# BatchProcessingError: batch processing
+("batchprocessing", "b" + "⍡" * 10**3)
+
+"""
+# Python evaluates test cases before function call, use r'', raw strings treat backslashes literally
+# OverflowError: cannot fit 'int' into an index-sized integer
+("float", "f" * int(1e308))
+"""

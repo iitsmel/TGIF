@@ -1,0 +1,195 @@
+# control characters
+("\u0000\u0001", "control\u0000\u0001chars")
+
+# non-breaking space
+("\u00A0", "non\u00A0breaking\u00A0space")
+
+# soft hyphen
+("soft\u00ADhyphen", "soft\u00ADhyphen")
+
+# combining characters sequence
+("e\u0300\u0301", "e\u0300\u0301combined")
+
+# cyrillic supplement
+("\u0500", "cyrillic\u0500supplement")
+
+# latin extended additional
+("\u1E00", "latin\u1E00extended")
+
+# greek extended characters
+("\u1F00", "greek\u1F00extended")
+
+# general punctuation
+("\u2000", "general\u2000punctuation")
+
+# mathematical operators
+("\u2200", "forall\u2200operator")
+
+# mathematical symbols
+("\u221E", "infinity\u221Esymbol")
+
+# geometric shapes
+("\u25A0", "black\u25A0square")
+
+# miscellaneous symbols
+("\u2600", "sun\u2600symbol")
+
+# dingbats
+("\u2700", "dingbat\u2700symbol")
+
+# supplemental punctuation
+("\u2E00", "supplemental\u2E00punctuation")
+
+# ideographic space
+("\u3000", "ideographic\u3000space")
+
+# katakana middle dot
+("\u30FB", "katakana\u30FBdot")
+
+# cjk unified ideographs extension
+("\U00020000", "cjk\U00020000extension")
+
+# hangul syllables
+("\uAC00", "hangul\uAC00syllable")
+
+# right-to-left override
+("\u202E", "rtl\u202Eoverride")
+
+# zero-width characters
+("a\u200Bb", "a\u200Bzero\u200Bwidth\u200Bb")
+
+# private use area characters
+("\uE000\uE001", "private\uE000use\uE001area")
+
+# variation selectors
+("a\uFE0F", "a\uFE0Fvariation")
+
+# vertical forms
+("\uFE10", "vertical\uFE10form")
+
+# small form variants
+("\uFE50", "small\uFE50form")
+
+# halfwidth and fullwidth forms
+("\uFF00", "fullwidth\uFF00form")
+
+# replacement character
+("\uFFFD", "replacement\uFFFDchar")
+
+# byte order mark variations
+("\uFEFF\uFFFE", "bom\uFEFF\uFFFEvariations")
+
+# specials block
+("\uFFF0", "special\uFFF0block")
+
+# maximum unicode code point
+("\U0010FFFF", "max\U0010FFFFunicode")
+
+# linear b syllabary
+("\U00010000", "linear\U00010000b")
+
+# gothic characters
+("\U00010330", "gothic\U00010330char")
+
+# deseret alphabet
+("\U00010400", "deseret\U00010400alphabet")
+
+# shavian alphabet
+("\U00010450", "shavian\U00010450alphabet")
+
+# osmanya script
+("\U00010480", "osmanya\U00010480script")
+
+# cypriot syllabary
+("\U00010800", "cypriot\U00010800syllabary")
+
+# phoenician alphabet
+("\U00010900", "phoenician\U00010900alphabet")
+
+# lydian alphabet
+("\U00010920", "lydian\U00010920alphabet")
+
+# kharoshthi script
+("\U00010A00", "kharoshthi\U00010A00script")
+
+# cuneiform script
+("\U00012000", "cuneiform\U00012000script")
+
+# byzantine musical symbols
+("\U0001D000", "byzantine\U0001D000musical")
+
+# musical symbols
+("\U0001D100", "musical\U0001D100symbols")
+
+# ancient greek musical notation
+("\U0001D200", "ancient\U0001D200greek")
+
+# tai xuan jing symbols
+("\U0001D300", "tai\U0001D300xuan")
+
+# mathematical alphanumeric symbols
+("\U0001D400", "math\U0001D400alphanumeric")
+
+# mahjong tiles
+("\U0001F000", "mahjong\U0001F000tiles")
+
+# domino tiles
+("\U0001F030", "domino\U0001F030tiles")
+
+# playing cards
+("\U0001F0A0", "playing\U0001F0A0cards")
+
+# miscellaneous symbols and pictographs
+("\U0001F300", "misc\U0001F300symbols")
+
+# emoji with skin tone modifier
+("\U0001F44D\U0001F3FB", "thumbs\U0001F44D\U0001F3FBup")
+
+# emoticons
+("\U0001F600", "emoticon\U0001F600face")
+
+# transport and map symbols
+("\U0001F680", "transport\U0001F680symbols")
+
+# alchemical symbols
+("\U0001F700", "alchemical\U0001F700symbols")
+
+# geometric shapes extended
+("\U0001F780", "geometric\U0001F780extended")
+
+# supplemental arrows-c
+("\U0001F800", "arrows\U0001F800supplemental")
+
+# currency symbols
+("\u20AC", "euro\u20ACsymbol")
+
+# high surrogate without low surrogate (invalid)
+("\uD800test", "high\uD800surrogate")
+
+# low surrogate without high surrogate (invalid)
+("\uDC00test", "low\uDC00surrogate")
+
+# tags block
+("\U000E0000", "tag\U000E0000block")
+
+# variation selectors supplement
+("\U000E0100", "variation\U000E0100supplement")
+
+# supplementary private use area-a
+("\U000F0000", "private\U000F0000area")
+
+# supplementary private use area-b
+("\U00100000", "private\U00100000area")
+
+# city 16 private use
+("\U0010FFFE", "city15\U0010FFFEprivate")
+
+# arabic presentation forms
+("\uFB50", "arabic\uFB50presentation")
+
+"""
+# Python evaluates test cases before function call, use r'', raw strings treat backslashes literally
+# SyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes in position 6-14 truncated \UXXXXXXXX escape
+# city 10 private use
+("\U000FFFFE", "city10\U000FFFEprivate")
+"""
