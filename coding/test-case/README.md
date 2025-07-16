@@ -120,3 +120,9 @@
 | U+E0100              | Variation Selectors Supplement                   | More variation selectors                                 |
 | U+F0000              | Supplementary Private Use Area-A                 | Private use characters                                   |
 | U+100000             | Supplementary Private Use Area-B                 | Private use characters                                   |
+
+## useful commands
+put comma behind test cases
+```
+sed -i '' 's/$/,/' filename
+```
