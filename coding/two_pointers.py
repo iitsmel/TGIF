@@ -395,3 +395,116 @@ def get_is(_):
 
 
 get_is(None)
+
+print()
+
+if input("Next: Two Sum II - Input Array Is Sorted\ncontinue: ").strip().lower() != "y":
+    exit()
+
+print()
+
+# https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/
+# Two Sum II - Input Array Is Sorted, Medium
+class TwoSumTwo:
+    def twoSum(self, numbers, target):
+        # numbers is list, target is integer
+        checking = singledispatch_function(numbers)
+        if checking is not True:
+            print(checking)
+            return
+
+        left = 0
+        right = len(numbers) - 1
+
+        while left < right:
+            total = numbers[right] + numbers[left]
+            if total == target:
+                return [left+1, right+1]
+            elif target > total:
+                left += 1
+            else:
+                right -= 1
+        return f"can not find a match"
+
+tst_ds = TwoSumTwo()
+def get_tst(_):
+    print("Two Sum II - Input Array Is Sorted")
+    print("happy path")
+    print(tst_ds.twoSum([2,7,11,15], 9))
+    print(tst_ds.twoSum([2,3,4], 6))
+    print(tst_ds.twoSum([-1,0], -1))
+    print(tst_ds.twoSum([1,2,3,4,5], 8))
+    print(tst_ds.twoSum([5,25,75], 100))
+    print(tst_ds.twoSum([3,24,50,79,88,150,345], 200))
+    print(tst_ds.twoSum([1,3,4,6,7,8,9], 13))
+    print(tst_ds.twoSum([-5,-1,0,3,6], 5))
+    print(tst_ds.twoSum([10,20,30,40,50], 90))
+    print(tst_ds.twoSum([7,11,15,20,35], 22))
+    print(tst_ds.twoSum([4,9,14,19,24], 33))
+    print(tst_ds.twoSum([3,10,17,24,31], 41))
+    
+    print()
+
+    print("corner case")
+    print(tst_ds.twoSum([1,2], 3))
+    print(tst_ds.twoSum([-1000,-999,-998], -1999))
+    print(tst_ds.twoSum([998,999,1000], 1999))
+    print(tst_ds.twoSum([-1000,1000], 0))
+    print(tst_ds.twoSum([0,0], 0))
+    print(tst_ds.twoSum([1,1], 2))
+    print(tst_ds.twoSum([-5,-4,-3,-2,-1], -9))
+    print(tst_ds.twoSum([0,0,3,4], 0))
+    print(tst_ds.twoSum([1,1,1,1,1,1,2], 3))
+
+    print()
+
+    print("edge case")
+    edges = [
+        ([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30], 59),
+        ([-500,-400,-300,-200,-100,0,100,200,300,400,500], 0),
+        ([1,1,1,1,1,1,1,1,1,2], 3),
+        ([-1,-1,-1,-1,-1,0,0,0,0,1], 0),
+        ([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29], 29),
+        ([-1000,-999,-998,-997,-996,-995,-994,-993,-992,-991,-990,-989,-988,-987,-986,-985,-984,-983,-982,1000], 0),
+        ([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1], 1),
+        ([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,1000], 1001),
+        ([999,999,999,999,999,999,999,999,999,1000], 1999),
+        ([500,500,500,500,500,500,500,500,500,500], 1000),
+        ([0,0,0,0,0,0,0,0,0,0], 0),
+        ([-1000,-1000,-1000,-1000,-1000,-1000,-1000,-1000,-1000,-1000], -2000),
+        ([1,999,999,999,999,999,999,999,999,999], 1000),
+        ([1,3,5,7,9,11,13,15,17,19], 4),
+        ([2,4,6,8,10,12,14,16,18,20], 6),
+        ([-10,-8,-6,-4,-2,0,2,4,6,8], -2),
+        ([100,200,300,400,500,600,700,800,900,1000], 1100),
+        ([-100,-90,-80,-70,-60,-50,-40,-30,-20,-10], -190),
+        ([1,10,100,1000], 1001),
+        ([3,33,333], 36),
+        ([7,77,777], 84),
+        ([5,50,500], 55),
+        ([9,99,999], 108),
+        ([11,111], 122),
+        ([13,131], 144),
+        ([], 5),
+        ([12], _),
+        ([], _),
+        ([1], 2),
+        ([1,2,3], 10),
+        ([3,2,1], 5),
+        ([1,2,3,4], 0),
+        ([1001,1002], 2003),
+        ([-1001,-1000], -2001),
+        ([1,2,3,4], 1001),
+        ([1,2,3,4], -1001),
+        ([1,2,2,1], 3),
+    ]
+
+    for eCase in edges:
+        try:
+            find_tst = tst_ds.twoSum(*eCase)
+            if find_tst != None:
+                print(find_tst)
+        except Exception as error_message:
+            print(type(error_message).__name__.replace("Error", " error".lower(), ":", eCase))
+
+get_tst(None)
