@@ -5,7 +5,11 @@ import random
 from functools import singledispatch
 
 @singledispatch
-def checkListInteger(input_case):
+def singledispatch_function(_):
+    return
+
+@singledispatch_function.register
+def checkListInteger(input_case: list):
     if type(input_case).__name__ != "list":
         return f"custom error: {input_case} is {type(input_case).__name__} not list"
     if len(input_case) == 0:
@@ -25,7 +29,7 @@ def checkListInteger(input_case):
 class MergeSortedArray:
     def merge(self, nums1, m, nums2, n):
         total = list(nums1) + list(nums2) + [m,n]
-        checking = checkListInteger(total)
+        checking = singledispatch_function(total)
         if checking is not True:
             print(checking)
             return
@@ -125,7 +129,7 @@ print()
 # Remove Duplicates from Sorted Array, easy
 class RemoveDuplicatesOne:
     def removeDuplicates(self, nums):
-        checking = checkListInteger(nums)
+        checking = singledispatch_function(nums)
         if checking is not True:
             print(checking)
             return
@@ -228,7 +232,7 @@ print()
 # Remove Duplicates from Sorted Array II, medium
 class RemoveDuplicatesTwo:
     def removeDuplicates(self, nums):
-        checking = checkListInteger(nums)
+        checking = singledispatch_function(nums)
         if checking is not True:
             return
         if len(nums) <= 2:
