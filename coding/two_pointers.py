@@ -25,7 +25,8 @@ def checkListInteger(input_case: list):
 
 @singledispatch_function.register
 def checkInteger(input_number: int):
-    if not str.isdigit(input_number):
+    turn_string = str(input_number).lstrip('-+')
+    if not str.isdigit(turn_string):
          return f"custom error: {input_number} is {type(input_number).__name__} not integer"
     return True
 
@@ -412,6 +413,10 @@ class TwoSumTwo:
         if checking is not True:
             print(checking)
             return
+        checking = singledispatch_function(target)
+        if checking is not True:
+            print(checking)
+            return        
 
         left = 0
         right = len(numbers) - 1
